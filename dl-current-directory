@@ -1,0 +1,8 @@
+#!/bin/sh
+# ディレクトリ内に､ファイルなどが在る場合､削除して1つ上の階層に移動したいときに利用
+
+current=$(pwd | awk -F / '{print $NF}')
+#echo "$current"
+cd ..
+#echo "$(pwd)"
+rm -rf "$current"

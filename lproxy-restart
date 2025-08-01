@@ -1,0 +1,22 @@
+#!/bin/bash
+# librewolfのsocks proxyを別の場所に変更したい時に使う｡
+
+#runtime path without slash at the last
+proxy_list_path="/home/mg/mg-script/proxy-list/world" # list of socks proxies, one proxy host per line
+
+profile_rtp="~/.librewolf/q3tejjc.default" # profile path of running librewolf, in which there is user.js
+pkill librewolf  # kill librewolf process. bookmarkのexportは､killからはできない｡
+#sleep 3
+
+#production path
+former_proxy=$(grep "relays.mullvad.net" ${profile_rtp}/user.js) #すでに利用していたproxyの抽出､mullvadの場合
+new_proxy="user_pref(\"network.proxy.socks\", \"$(shuf -n 1 ${proxy_list_path})\");" #リストから､proxyの抽出し､整形
+while [ "${former_proxy}" == "${new_proxy}" ]; do #同じ場合､前回とは違うproxyに書き換え
+  new_proxy="user_pref(\"network.proxy.socks\", \"$(shuf -n 1 ${proxy_list_path})\");"
+done
+
+sed -i '/relays.mullvad.net/d' ${profile_rtp}/user.js #inplace(上書き)で､キーワードを含む(=前回のproxy)を削除
+sed -i "/socks-proxy-settings/a ${new_proxy}" ${profile_rtp}/user.js  #inplaceで､新しいproxyを書き込み｡
+
+#再起動
+lw 

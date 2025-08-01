@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# 一連の画像ファイルをpdfに変換する
+#
+# Change path to the primary directory of Mangas wherein like vol1〜vol10 of Mangas
+# Iterate over subdirectories
+for subdir in */; do
+  # Extract the subdirectory name
+  dirname=$(basename "$subdir")
+  pdir=$(basename "$(pwd)")
+
+  echo "start converting $subdir"
+  nice -n 19 convert "$subdir/*.jpg" "$pdir-$dirname.pdf"
+    #音声や処理が途切れるかもしれない｡
+  echo -e "\t finished converting $subdir"
+done

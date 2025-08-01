@@ -1,0 +1,14 @@
+#!/bin/bash
+# タバタ式のhiitを行うときに用いる｡
+
+termdown 5 -T Ready? -p 'Are you ready?' -v 'en-gb'
+for (( i=1; i<=8; i++ ))
+do
+ #echo "Loop number:" $i
+ espeak "Burst$i"
+ termdown 20 -T "Burst / $i" -v 'en-gb'
+ espeak "Rest$i"
+ termdown 10 -T "Rest  / $i" -v 'en-gb'
+done
+espeak "Finish"
+echo "Finish"

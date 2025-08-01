@@ -1,0 +1,14 @@
+#!/bin/bash
+#yuttoでlist.txtを入力とする｡list内部にはbilibiliの動画のダウンロードurlを1行毎に1つ記載｡
+#ラインの数を数え､その分ループする｡
+#1つめは1つめのdirを作り､その中にidをファイル名として保存
+
+file="list.txt"
+while read -r line; do
+    echo -e "$line"
+    filename=(${line//\// })
+    echo "${filename[3]}"
+    echo "download start"
+    proxychains4 yutto -tp ${filename[3]}/{id} --batch $line
+    echo "download end"
+done <$file
