@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#blog投稿のために､画像を再帰的にまとめて縮小(リサイズ､フォーマット変更)
+
+# 画像ディレクトリ内を実行場所とする｡
+mkdir -p converted
+for file in *.{png,jpg}; do  
+    echo "filename $file"
+    [ -e "$file" ] || continue  
+    name=$(basename "$file")  
+    name="${name%.*}"
+    echo "run magick" 
+    magick "$file" \
+        -resize "1200x1200>" \
+        -strip \
+        -quality 80 \
+        "converted/$name.webp"
+        #"./$name.webp"
+done
+mv converted/*.webp ./
+rm *.{png,jpg}
+rm -rf converted
